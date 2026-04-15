@@ -1,0 +1,8 @@
+package com.domain.booking_service.repository;
+
+import com.domain.booking_service.model.Theatre;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TheatreRepository extends JpaRepository<Theatre, Long> {
+}
+

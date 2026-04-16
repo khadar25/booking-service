@@ -1,6 +1,6 @@
 package com.domain.booking_service.service;
 
-import com.domain.booking_service.config.BookingConstants;
+import com.domain.booking_service.constants.BookingConstants;
 import com.domain.booking_service.dto.BookingDTO;
 import com.domain.booking_service.mapper.BookingMapper;
 import com.domain.booking_service.model.BookedSeat;

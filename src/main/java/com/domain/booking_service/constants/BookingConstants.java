@@ -1,4 +1,4 @@
-package com.domain.booking_service.config;
+package com.domain.booking_service.constants;
 
 import java.time.LocalTime;
 

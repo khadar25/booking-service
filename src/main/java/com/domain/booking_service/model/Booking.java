@@ -1,42 +1,39 @@
 package com.domain.booking_service.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String userName;
+
+    private LocalDateTime bookingTime;
+    private List<String> seats;
+    private String  status;
+    private double totalPrice;
+
     @ManyToOne
     private Show show;
-    @ManyToMany
-    private List<Seat> seats;
-    private String status;
-    private Double totalPrice;
-    /**
-     * All-args constructor for Booking entity.
-     * @param id Booking ID
-     * @param userName User name
-     * @param show Show entity
-     * @param seats List of Seat entities
-     * @param status Booking status
-     * @param totalPrice Total price for the booking
-     */
-    public Booking(Long id, String userName, Show show, List<Seat> seats, String status, Double totalPrice) {
-        this.id = id; this.userName = userName; this.show = show; this.seats = seats; this.status = status; this.totalPrice = totalPrice;
-    }
-
-    /**
-     * No-args constructor for Booking entity.
-     */
-    public Booking() {}
 
 }

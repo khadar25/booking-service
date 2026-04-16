@@ -1,6 +1,7 @@
 package com.domain.booking_service.service;
 
 import com.domain.booking_service.dto.ShowDTO;
+import com.domain.booking_service.dto.TheatreDTO;
 import com.domain.booking_service.exception.BookingServiceException;
 import com.domain.booking_service.mapper.ShowMapper;
 import com.domain.booking_service.model.Movie;
@@ -17,7 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.domain.booking_service.util.BookingServiceUtil.parseLocalDate;
+import static com.domain.booking_service.util.BookingServiceUtil.parseLocalTime;
 
 @Service
 public class ShowService {
@@ -41,50 +49,69 @@ public class ShowService {
      * @param pageable pagination information
      * @return a page of ShowDTOs matching the filters
      */
-    public Page<ShowDTO> findShowsWithFilters(String movie, String city, String date, Pageable pageable) {
-        java.time.LocalDate showDate = null;
-        if (date != null && !date.isEmpty()) {
-            showDate = java.time.LocalDate.parse(date);
+    public Page<TheatreDTO> getTheatres(String movie, String city, String date,String time, Pageable pageable) {
+
+        Map<String, List<ShowDTO>> theatreMap = new HashMap<>();
+        List<Object[]> shows = showRepository.findByMovieAndCityAndShowDate(movie, city, parseLocalDate(date), parseLocalTime(time));
+
+        for (Object[] row : shows) {
+
+            Long showId = (Long) row[0];
+            String theatreName = (String) row[1];
+            LocalTime showTime = (LocalTime) row[2];
+            ShowDTO showDTO =  ShowDTO.builder().id(showId).time(showTime.toString()).build();
+            theatreMap.computeIfAbsent(theatreName, k -> new ArrayList<>()).add(showDTO);
         }
-        List<Show> shows = showRepository.findByMovieAndCityAndShowDate(
-            (movie != null && !movie.isEmpty()) ? movie : null,
-            (city != null && !city.isEmpty()) ? city : null,
-            showDate
-        );
-        List<ShowDTO> filtered = shows.stream().map(ShowMapper::toDTO).toList();
+
+        List<TheatreDTO> result = new ArrayList<>();
+
+        for (Map.Entry<String, List<ShowDTO>> entry : theatreMap.entrySet()) {
+            result.add(new TheatreDTO(entry.getKey(), entry.getValue()));
+        }
         int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), filtered.size());
-        List<ShowDTO> pageContent = start > end ? List.of() : filtered.subList(start, end);
-        return new PageImpl<>(pageContent, pageable, filtered.size());
+        int end = Math.min((start + pageable.getPageSize()), result.size());
+        List<TheatreDTO> pageContent = start > end ? List.of() : result.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, result.size());
     }
 
+    /**
+     * This method will create the show.
+     * @param showDTO
+     * @return
+     */
     public ShowDTO createShow(ShowDTO showDTO) {
-        Movie movie = movieRepository.findById(showDTO.getMovieId())
-            .orElseThrow(() -> new BookingServiceException("Movie not found", HttpStatus.NOT_FOUND));
-        Screen screen = screenRepository.findById(showDTO.getScreenId())
-            .orElseThrow(() -> new BookingServiceException("Screen not found", HttpStatus.NOT_FOUND));
+        Movie movie = getMovie(showDTO.getMovieId());
+        Screen screen = getScreen(showDTO.getScreenId());
         Show show = ShowMapper.toEntity(showDTO, movie, screen);
         Show created = showRepository.save(show);
         logger.info("Show created successfully: {}", created);
         return ShowMapper.toDTO(created);
     }
 
+    /**
+     * This Method  will update the show details based on the show id. If the show is not found for the given id, it will throw a BookingServiceException with a NOT_FOUND status.
+     * @param id
+     * @param showDTO
+     * @return
+     */
     public ShowDTO updateShow(Long id, ShowDTO showDTO) {
         showDTO.setId(id);
         if (!showRepository.existsById(id)) {
             logger.error("Show not found for id: {}", id);
             throw new BookingServiceException("Show not found", HttpStatus.NOT_FOUND);
         }
-        Movie movie = movieRepository.findById(showDTO.getMovieId())
-            .orElseThrow(() -> new BookingServiceException("Movie not found", HttpStatus.NOT_FOUND));
-        Screen screen = screenRepository.findById(showDTO.getScreenId())
-            .orElseThrow(() -> new BookingServiceException("Screen not found", HttpStatus.NOT_FOUND));
+        Movie movie = getMovie(showDTO.getMovieId());
+        Screen screen = getScreen(showDTO.getScreenId());
         Show show = ShowMapper.toEntity(showDTO, movie, screen);
         Show updated = showRepository.save(show);
         logger.info("Show updated successfully: {}", updated);
         return ShowMapper.toDTO(updated);
     }
 
+    /**
+     * This method will delete the show based on the show id. If the show is not found for the given id, it will throw a BookingServiceException with a NOT_FOUND status.
+     * @param id
+     */
     public void deleteShow(Long id) {
         logger.info("Deleting show with id: {}", id);
         if (!showRepository.existsById(id)) {
@@ -94,4 +121,25 @@ public class ShowService {
         showRepository.deleteById(id);
         logger.info("Show deleted successfully with id: {}", id);
     }
+
+    /**
+     * This method will fetch the movie details based on the movie id. If the movie is not found for the given id, it will throw a BookingServiceException with a NOT_FOUND status.
+     * @param movieId
+     * @return
+     */
+    private Movie getMovie(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new BookingServiceException("Movie not found", HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * This method will fetch the screen details based on the screen id. If the screen is not found for the given id, it will throw a BookingServiceException with a NOT_FOUND status.
+     * @param screenId
+     * @return
+     */
+    private Screen getScreen(Long screenId) {
+        return screenRepository.findById(screenId)
+                .orElseThrow(() -> new BookingServiceException("Screen not found", HttpStatus.NOT_FOUND));
+    }
+
 }

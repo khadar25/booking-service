@@ -13,7 +13,7 @@ public class BookingDTO {
     private Long id;
     private String userName;
     private Long showId;
-    private List<Long> seatIds;
+    private List<String> seatIds;
     private String status;
     private Double totalPrice;
 }

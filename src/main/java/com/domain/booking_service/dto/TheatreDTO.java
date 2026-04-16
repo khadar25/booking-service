@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TheatreDTO {
-    private Long id;
-    private String name;
-    private String city;
-    private int totalSeats;
+
+    private String theatreName;
+    private List<ShowDTO> shows;
 }

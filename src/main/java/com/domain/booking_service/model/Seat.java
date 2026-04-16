@@ -1,46 +1,31 @@
 package com.domain.booking_service.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "seat")
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String seatNumber;
-    private Long showId;
-    private String status;
 
-    public Seat() {}
+    @ManyToOne
+    private Screen screen;
 
-    public Seat(Long id, String seatNumber, Long showId, String status) {
-        this.id = id;
-        this.seatNumber = seatNumber;
-        this.showId = showId;
-        this.status = status;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public Long getShowId() {
-        return showId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setId(Long id) { this.id = id; }
-    public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
-    public void setShowId(Long showId) { this.showId = showId; }
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

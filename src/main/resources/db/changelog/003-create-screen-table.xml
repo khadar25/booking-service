@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="create-screen-table" author="system">
+        <createTable tableName="screen">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="screen_name" type="varchar(50)"/>
+            <column name="theatre_id" type="bigint"/>
+            <column name="capacity" type="int"/>
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableName="screen"
+            baseColumnNames="theatre_id"
+            referencedTableName="theatre"
+            referencedColumnNames="id"
+            constraintName="fk_screen_theatre"/>
+    </changeSet>
+
+</databaseChangeLog>

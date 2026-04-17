@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="create-booked-seat-table" author="system">
+        <createTable tableName="booked_seat">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="seat_id" type="bigint"/>
+            <column name="booking_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableName="booked_seat"
+            baseColumnNames="seat_id"
+            referencedTableName="seat"
+            referencedColumnNames="id"
+            constraintName="fk_booked_seat_seat"/>
+        <addForeignKeyConstraint
+            baseTableName="booked_seat"
+            baseColumnNames="booking_id"
+            referencedTableName="booking"
+            referencedColumnNames="id"
+            constraintName="fk_booked_seat_booking"/>
+    </changeSet>
+
+</databaseChangeLog>

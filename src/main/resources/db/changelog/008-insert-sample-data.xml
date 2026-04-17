@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="insert-sample-data" author="system">
+        <!-- Insert sample data into movie -->
+        <insert tableName="movie">
+            <column name="id" value="1"/>
+            <column name="name" value="Avengers"/>
+            <column name="language" value="English"/>
+            <column name="genre" value="Action"/>
+        </insert>
+        <insert tableName="movie">
+            <column name="id" value="2"/>
+            <column name="name" value="Pushpa"/>
+            <column name="language" value="Telugu"/>
+            <column name="genre" value="Action"/>
+        </insert>
+
+        <!-- Insert sample data into theatre -->
+        <insert tableName="theatre">
+            <column name="id" value="1"/>
+            <column name="name" value="PVR Orion"/>
+            <column name="city" value="Bangalore"/>
+        </insert>
+        <insert tableName="theatre">
+            <column name="id" value="2"/>
+            <column name="name" value="INOX Garuda"/>
+            <column name="city" value="Bangalore"/>
+        </insert>
+        <insert tableName="theatre">
+            <column name="id" value="3"/>
+            <column name="name" value="Cinepolis Forum"/>
+            <column name="city" value="Hyderabad"/>
+        </insert>
+
+        <!-- Insert sample data into screen -->
+        <insert tableName="screen">
+            <column name="id" value="1"/>
+            <column name="screen_name" value="Screen 1"/>
+            <column name="theatre_id" value="1"/>
+            <column name="capacity" value="200"/>
+        </insert>
+        <insert tableName="screen">
+            <column name="id" value="2"/>
+            <column name="screen_name" value="Screen 2"/>
+            <column name="theatre_id" value="2"/>
+            <column name="capacity" value="150"/>
+        </insert>
+        <insert tableName="screen">
+            <column name="id" value="3"/>
+            <column name="screen_name" value="Screen 1"/>
+            <column name="theatre_id" value="3"/>
+            <column name="capacity" value="180"/>
+        </insert>
+
+        <!-- Insert sample data into show -->
+        <insert tableName="show">
+            <column name="id" value="1"/>
+            <column name="movie_id" value="1"/>
+            <column name="screen_id" value="1"/>
+            <column name="show_date" value="2026-04-16"/>
+            <column name="show_time" value="18:00:00"/>
+        </insert>
+        <insert tableName="show">
+            <column name="id" value="2"/>
+            <column name="movie_id" value="2"/>
+            <column name="screen_id" value="2"/>
+            <column name="show_date" value="2026-04-16"/>
+            <column name="show_time" value="20:00:00"/>
+        </insert>
+        <insert tableName="show">
+            <column name="id" value="3"/>
+            <column name="movie_id" value="1"/>
+            <column name="screen_id" value="3"/>
+            <column name="show_date" value="2026-04-17"/>
+            <column name="show_time" value="17:30:00"/>
+        </insert>
+
+        <!-- Insert sample data into seat -->
+        <insert tableName="seat">
+            <column name="id" value="1"/>
+            <column name="screen_id" value="1"/>
+            <column name="seat_number" value="A1"/>
+            <column name="seat_type" value="Regular"/>
+        </insert>
+        <insert tableName="seat">
+            <column name="id" value="2"/>
+            <column name="screen_id" value="1"/>
+            <column name="seat_number" value="A2"/>
+            <column name="seat_type" value="Regular"/>
+        </insert>
+        <insert tableName="seat">
+            <column name="id" value="3"/>
+            <column name="screen_id" value="2"/>
+            <column name="seat_number" value="B1"/>
+            <column name="seat_type" value="Premium"/>
+        </insert>
+        <insert tableName="seat">
+            <column name="id" value="4"/>
+            <column name="screen_id" value="3"/>
+            <column name="seat_number" value="C1"/>
+            <column name="seat_type" value="VIP"/>
+        </insert>
+
+        <!-- Insert sample data into booking -->
+        <insert tableName="booking">
+            <column name="id" value="1"/>
+            <column name="show_id" value="1"/>
+            <column name="user_name" value="alice"/>
+            <column name="booking_time" value="2026-04-15T10:00:00"/>
+            <column name="status" value="confirmed"/>
+            <column name="total_price" value="15.00"/>
+        </insert>
+        <insert tableName="booking">
+            <column name="id" value="2"/>
+            <column name="show_id" value="2"/>
+            <column name="user_name" value="bob"/>
+            <column name="booking_time" value="2026-04-15T11:00:00"/>
+            <column name="status" value="confirmed"/>
+            <column name="total_price" value="20.00"/>
+        </insert>
+        <insert tableName="booking">
+            <column name="id" value="3"/>
+            <column name="show_id" value="3"/>
+            <column name="user_name" value="charlie"/>
+            <column name="booking_time" value="2026-04-15T12:00:00"/>
+            <column name="status" value="pending"/>
+            <column name="total_price" value="0.00"/>
+        </insert>
+
+        <!-- Insert sample data into booked_seat -->
+        <insert tableName="booked_seat">
+            <column name="id" value="1"/>
+            <column name="seat_id" value="1"/>
+            <column name="booking_id" value="1"/>
+        </insert>
+        <insert tableName="booked_seat">
+            <column name="id" value="2"/>
+            <column name="seat_id" value="2"/>
+            <column name="booking_id" value="1"/>
+        </insert>
+        <insert tableName="booked_seat">
+            <column name="id" value="3"/>
+            <column name="seat_id" value="3"/>
+            <column name="booking_id" value="2"/>
+        </insert>
+        <insert tableName="booked_seat">
+            <column name="id" value="4"/>
+            <column name="seat_id" value="4"/>
+            <column name="booking_id" value="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

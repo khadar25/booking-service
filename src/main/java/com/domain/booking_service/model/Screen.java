@@ -6,9 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "screen")
@@ -24,5 +28,9 @@ public class Screen {
     private int capacity;
 
     @ManyToOne
+    @JoinColumn(name = "theatre_id")
     private Theatre theatre;
+
+    @OneToMany(mappedBy = "screen")
+    private List<Show> shows;
 }

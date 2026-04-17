@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <include file="db/changelog/001-create-movie-table.xml"/>
+    <include file="db/changelog/002-create-theatre-table.xml"/>
+    <include file="db/changelog/003-create-screen-table.xml"/>
+    <include file="db/changelog/004-create-seat-table.xml"/>
+    <include file="db/changelog/005-create-show-table.xml"/>
+    <include file="db/changelog/006-create-booking-table.xml"/>
+    <include file="db/changelog/007-create-booked-seat-table.xml"/>
+    <include file="db/changelog/008-insert-sample-data.xml"/>
+
+</databaseChangeLog>
